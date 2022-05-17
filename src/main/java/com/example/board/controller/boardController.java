@@ -3,10 +3,14 @@ package com.example.board.controller;
 import com.example.board.entity.Board;
 import com.example.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 
 @Controller
 public class boardController {
@@ -31,8 +35,9 @@ public class boardController {
     }
 
     @GetMapping("/board/list")
-    public String boardList(Model model){
-        model.addAttribute("list", boardService.boardList());
+    public String boardList(Model model,@PageableDefault(page = 0, size=10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+
+        model.addAttribute("list", boardService.boardList(pageable));
 
         return "boardlist";
     }
